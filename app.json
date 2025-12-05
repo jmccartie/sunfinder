@@ -1,0 +1,16 @@
+{
+  "name": "Sun Finder",
+  "description": "Find the closest sunny city near your zip code",
+  "repository": "https://github.com/yourusername/sunfinder",
+  "keywords": ["weather", "sun", "city", "zipcode"],
+  "env": {
+    "OPENWEATHER_API_KEY": {
+      "description": "Your OpenWeatherMap API key",
+      "required": true
+    },
+    "NODE_ENV": {
+      "value": "production"
+    }
+  }
+}
+

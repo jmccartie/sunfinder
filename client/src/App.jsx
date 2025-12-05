@@ -7,8 +7,7 @@ function App() {
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
 
-  // Use environment variable for API URL, fallback to localhost for development
-  // In production, VITE_API_URL must be set in Netlify environment variables
+  // Use environment variable for API URL in development, or same origin in production (Heroku)
   const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3001' : '')
 
   const handleSubmit = async (e) => {
@@ -17,15 +16,10 @@ function App() {
     setError(null)
     setResult(null)
 
-    // Check if API URL is missing
-    if (!API_URL) {
-      setError('API configuration error: Please set VITE_API_URL environment variable')
-      setLoading(false)
-      return
-    }
-
     try {
-      const response = await fetch(`${API_URL}/api/find-sunny-city`, {
+      // Use API_URL if set, otherwise use relative path (same origin on Heroku)
+      const apiEndpoint = API_URL ? `${API_URL}/api/find-sunny-city` : '/api/find-sunny-city'
+      const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

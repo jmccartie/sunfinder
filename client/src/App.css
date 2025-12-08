@@ -47,17 +47,32 @@ h1 {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.zip-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.zip-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .zip-input {
-  flex: 1;
-  min-width: 200px;
   padding: 15px 20px;
   font-size: 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
   outline: none;
   transition: border-color 0.3s;
+  width: 100%;
 }
 
 .zip-input:focus {
@@ -65,6 +80,39 @@ h1 {
 }
 
 .zip-input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.temp-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 0 0 140px;
+}
+
+.temp-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.temp-input {
+  padding: 15px 20px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+.temp-input:focus {
+  border-color: #667eea;
+}
+
+.temp-input:disabled {
   background-color: #f5f5f5;
   cursor: not-allowed;
 }

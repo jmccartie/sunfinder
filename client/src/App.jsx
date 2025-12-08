@@ -3,6 +3,7 @@ import './App.css'
 
 function App() {
   const [zipCode, setZipCode] = useState('')
+  const [minTemp, setMinTemp] = useState('60')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
@@ -24,7 +25,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ zipCode }),
+        body: JSON.stringify({ zipCode, minTemp: parseInt(minTemp) || 60 }),
       })
 
       const data = await response.json()
@@ -45,19 +46,37 @@ function App() {
     <div className="app">
       <div className="container">
         <h1>☀️ Sun Finder</h1>
-        <p className="subtitle">Find the closest sunny city (high temp ≥60°F) near your zip code</p>
+        <p className="subtitle">Find the closest sunny city near your zip code</p>
 
         <form onSubmit={handleSubmit} className="form">
           <div className="input-group">
-            <input
-              type="text"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              placeholder="Enter zip code (e.g., 10001)"
-              className="zip-input"
-              disabled={loading}
-              required
-            />
+            <div className="zip-input-wrapper">
+              <label htmlFor="zip-code" className="zip-label">Zip Code:</label>
+              <input
+                id="zip-code"
+                type="text"
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                placeholder="Enter zip code (e.g., 10001)"
+                className="zip-input"
+                disabled={loading}
+                required
+              />
+            </div>
+            <div className="temp-input-wrapper">
+              <label htmlFor="min-temp" className="temp-label">Min Temp (°F):</label>
+              <input
+                id="min-temp"
+                type="number"
+                value={minTemp}
+                onChange={(e) => setMinTemp(e.target.value)}
+                placeholder="60"
+                className="temp-input"
+                disabled={loading}
+                min="0"
+                max="120"
+              />
+            </div>
             <button 
               type="submit" 
               className="submit-btn"

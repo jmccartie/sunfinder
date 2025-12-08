@@ -173,7 +173,7 @@ function getWeatherEmoji(weatherMain, weatherDescription) {
 }
 
 // Get weather for a city
-async function getWeatherForCity(city) {
+async function getWeatherForCity(city, minTemp = 60) {
   try {
     const apiKey = process.env.OPENWEATHER_API_KEY;
     if (!apiKey) {
@@ -196,7 +196,6 @@ async function getWeatherForCity(city) {
     const weatherDescription = response.data.weather[0].description;
     const currentTemp = response.data.main.temp;
     const highTemp = response.data.main.temp_max;
-    const minTemp = 60; // Minimum high temperature requirement
 
     return {
       city: city.name,
@@ -316,7 +315,8 @@ async function zipToCoordinates(zipCode) {
 
 app.post('/api/find-sunny-city', async (req, res) => {
   try {
-    const { zipCode } = req.body;
+    const { zipCode, minTemp } = req.body;
+    const minTemperature = parseInt(minTemp) || 60;
 
     if (!zipCode) {
       return res.status(400).json({ error: 'Zip code is required' });
@@ -345,7 +345,7 @@ app.post('/api/find-sunny-city', async (req, res) => {
     let checkedCities = [];
     
     for (const city of nearbyCities) {
-      const weatherResult = await getWeatherForCity(city);
+      const weatherResult = await getWeatherForCity(city, minTemperature);
       
       if (weatherResult === null) {
         // Skip if API call failed
@@ -399,7 +399,7 @@ app.post('/api/find-sunny-city', async (req, res) => {
       
       return res.json({
         success: false,
-        message: 'No sunny cities found within 1000 miles (with high temp ≥60°F)',
+        message: `No sunny cities found within 1000 miles (with high temp ≥${minTemperature}°F)`,
         closestCity: closestCity.city,
         weather: closestCity.weather,
         description: closestCity.description,
